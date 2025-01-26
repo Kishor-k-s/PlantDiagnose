@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Classifier</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        .drop-area {
+            border: 2px dashed #cccccc;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+            cursor: pointer;
+            position: relative;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .drop-area img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: none;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333333;
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Plant Disease Classifier</h1>
+
+        <!-- Dropdown for selecting plant type -->
+        <select id="plant-select" class="button">
+            <option value="Potato">Potato</option>
+            <option value="Tomato">Tomato</option>
+            <option value="Bell Pepper">Bell Pepper</option>
+        </select>
+
+        <div class="drop-area" id="drop-area">
+            <p id="drop-text">Drag & Drop an image here or click to upload</p>
+            <img id="preview-image" alt="Preview">
+            <input type="file" id="file-input" class="file-input" accept="image/*">
+        </div>
+
+        <button class="button" id="predict-button">Predict</button>
+        <div class="spinner" id="loading-spinner"></div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('file-input');
+        const predictButton = document.getElementById('predict-button');
+        const resultDiv = document.getElementById('result');
+        const spinner = document.getElementById('loading-spinner');
+        const previewImage = document.getElementById('preview-image');
+        const dropText = document.getElementById('drop-text');
+        const plantSelect = document.getElementById('plant-select');
+        let uploadedFile = null;
+
+        // Handle drag-and-drop
+        dropArea.addEventListener('click', () => fileInput.click());
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.style.borderColor = '#007bff';
+        });
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.borderColor = '#cccccc';
+        });
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.style.borderColor = '#cccccc';
+            uploadedFile = e.dataTransfer.files[0];
+            if (uploadedFile) {
+                displayImage(uploadedFile);
+            }
+        });
+
+        // Handle file input
+        fileInput.addEventListener('change', () => {
+            uploadedFile = fileInput.files[0];
+            if (uploadedFile) {
+                displayImage(uploadedFile);
+            }
+        });
+
+        // Display the uploaded image
+        function displayImage(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImage.src = e.target.result;
+                previewImage.style.display = 'block';
+                dropText.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Handle prediction
+        predictButton.addEventListener('click', async () => {
+            if (!uploadedFile) {
+                alert('Please upload an image first!');
+                return;
+            }
+
+            // Get the selected plant type
+            const plantType = plantSelect.value;
+
+            // Show spinner and clear previous result
+            spinner.style.display = 'block';
+            resultDiv.style.display = 'none';
+
+            const formData = new FormData();
+            formData.append('file', uploadedFile);
+
+            try {
+                const response = await fetch(`http://localhost:8000/predict?plant=${plantType}`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+                resultDiv.textContent = `Plant: ${result.plant}, Class: ${result.class}, Confidence: ${(result.confidence * 100).toFixed(2)}%`;
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                resultDiv.textContent = 'Error predicting the image!';
+                resultDiv.style.display = 'block';
+            } finally {
+                spinner.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>

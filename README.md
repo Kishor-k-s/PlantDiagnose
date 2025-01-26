@@ -11,7 +11,6 @@ The **Plant Disease Classifier** is an AI-powered tool that helps farmers and ga
 
 ## Screenshots
 
-### 1. Home Page (Select Plant Type)
 <div style="display: flex; justify-content: center;  width: 100%;">
     <img src="https://github.com/user-attachments/assets/e61c3626-548c-4ee1-bbb4-9c1650daa49b" width="60%" />
 </div>

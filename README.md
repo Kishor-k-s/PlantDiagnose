@@ -9,6 +9,19 @@ The **Plant Disease Classifier** is an AI-powered tool that helps farmers and ga
 - **Real-time Predictions**: The app makes predictions about plant health using pre-trained models for each plant type.
 - **Confidence Score**: The result includes a confidence percentage for the predicted disease classification.
 
+## Screenshots
+
+### 1. Home Page (Select Plant Type)
+<div style="display: flex; justify-content: center;  width: 100%;">
+    <img src="https://github.com/user-attachments/assets/e61c3626-548c-4ee1-bbb4-9c1650daa49b" width="60%" />
+</div>
+
+<div style="display: flex; justify-content: space-between; width: 100%; padding: 0 10%;">
+    <img src="https://github.com/user-attachments/assets/caa068cb-a534-4bae-9729-3f238df84ae9" width="45%" />
+    <img src="https://github.com/user-attachments/assets/393ea454-abf2-4182-8f31-eda3f5087984" width="45%" />
+</div>
+
+
 ## Technologies Used
 - **Frontend**:
   - HTML, CSS, and JavaScript for building the user interface.

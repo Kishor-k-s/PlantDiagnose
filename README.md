@@ -48,6 +48,6 @@ The **Plant Disease Classifier** is an AI-powered tool that helps farmers and ga
 ### Setup
 
 1. Clone this repository to your local machine
-2. Install the required dependencies
+2. Install the required dependencies: pip install -r requirements.txt
 3. Run the FastAPI server: uvicorn main:app --reload
 4. Open the app(index.html) in your browser: Navigate to http://localhost:8000 to start using the tool.

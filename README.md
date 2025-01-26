@@ -39,7 +39,7 @@ The **Plant Disease Classifier** is an AI-powered tool that helps farmers and ga
 ## Installation
 
 ### Prerequisites
-- Python 3.7+
+- Python 3.8.20
 - TensorFlow
 - FastAPI
 - Uvicorn

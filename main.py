@@ -35,6 +35,18 @@ MODEL_INFO = {
     "Bell Pepper": {
         "model_path": "./models/bell_pepper",
         "classes": ["Bacterial spot", "Healthy"]
+    },
+    "Apple": {
+        "model_path": "./models/apple",
+        "classes": ['Apple scab','Black rot','Cedar apple rust','Healthy']
+    },
+    "Corn": {
+        "model_path": "./models/corn",
+        "classes": ['Cercospora leaf spot (Gray leaf spot)','Common rust','Northern Leaf Blight','Healthy']
+    },
+    "Grapes": {
+        "model_path": "./models/grape",
+        "classes": ['Black rot','Esca (Black_Measles)','Leaf_blight (Isariopsis_Leaf_Spot)','Healthy']
     }
 }
 
